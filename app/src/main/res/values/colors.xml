@@ -7,6 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="background">#FFA37AEC</color>
+
+    <color name="background">#FF5D5D5D</color>
+    <color name="background_test">#D6E6F0</color>
+    <color name="background_test2">#B5D6D8</color>
+    <color name="background_test3">#B5D692</color>
     <color name="white_background">#FFECECEC</color>
+    <color name="gray_more">#FF979797</color>
+    <color name="gray">#FFAAAAAA</color>
+    <color name="seek_bar_background">#FFD8D8D8</color>
 </resources>
