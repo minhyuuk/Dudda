@@ -7,12 +7,36 @@
 
         <variable
             name="fragment"
-            type="com.app.dudda.PlayerFragment" />
+            type="com.app.dudda.view.fragment.PlayerFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/playerViewGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="
+            trackTextView,
+            artistTextView,
+            coverImageCardView,
+            bottomBackgroundView,
+            playerSeekBar,
+            playTimeTextView,
+            totalTimeTextView"
+            tools:visibility="visible" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/playListViewGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="
+            titleTextView,
+            playListRecyclerView,
+            playListSeekBar" />
 
         <View
             android:id="@+id/topBackgroundView"
@@ -43,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="재생목록"
+            android:text="재생목"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -52,6 +76,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/artistTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -76,7 +101,7 @@
             app:layout_constraintVertical_weight="2" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
+            android:id="@+id/coverImageCardView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="36dp"
@@ -103,10 +128,10 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toTopOf="@id/playerView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/playerView"
-            app:layout_constraintTop_toBottomOf="@id/titleTextView"/>
+            app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
 
         <!--    음악을 재생하기 위한 view, controller 이용하지 않을 예정, false에 alpha 0 적용    -->
