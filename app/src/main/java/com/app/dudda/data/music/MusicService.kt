@@ -1,4 +1,4 @@
-package com.app.dudda.data.service
+package com.app.dudda.data.music
 
 import retrofit2.Call
 import retrofit2.http.GET

@@ -1,4 +1,4 @@
-package com.app.dudda.data.service
+package com.app.dudda.data.music
 
 import com.google.gson.annotations.SerializedName
 
