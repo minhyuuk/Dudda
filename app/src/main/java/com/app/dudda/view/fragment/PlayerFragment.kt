@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.dudda.R
 import com.app.dudda.data.music.MusicDTO
 import com.app.dudda.data.music.MusicService
@@ -20,12 +21,25 @@ class PlayerFragment : Fragment(R.layout.fragment_player){
 
     private var binding: FragmentPlayerBinding? = null
     private var boolOfWatchPlayerListView = true
+    private lateinit var playListAdapter: PlayListAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val fragmentPlayerBinding = FragmentPlayerBinding.bind(view)
         binding = fragmentPlayerBinding
         getMusicFromServer()
         initPlayListButton(fragmentPlayerBinding)
+        initRecyclerView(fragmentPlayerBinding)
+    }
+
+    private fun initRecyclerView(fragmentPlayerBinding: FragmentPlayerBinding) {
+        playListAdapter = PlayListAdapter {
+            // 음악 재생하는 함수
+        }
+        fragmentPlayerBinding.playListRecyclerView.apply {
+            adapter = playListAdapter
+            layoutManager = LinearLayoutManager(context)
+        }
     }
 
     private fun getMusicFromServer() {
@@ -53,6 +67,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player){
                                     // 반환값은 MusicModel
                                     musicEntity.mapper(index.toLong())
                                 }
+                                playListAdapter.submitList(modelList)
                             }
                         }
 
