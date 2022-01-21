@@ -19,7 +19,7 @@ class PlayListAdapter(private val callback: (MusicModel) -> Unit) :
         fun bind(item: MusicModel) {
 
             val trackTextView = view.findViewById<TextView>(R.id.itemTrackTextView)
-            val artistTextView = view.findViewById<TextView>(R.id.artistTextView)
+            val artistTextView = view.findViewById<TextView>(R.id.itemArtistTextView)
             val coverImageView = view.findViewById<ImageView>(R.id.itemCoverImageView)
 
             trackTextView.text = item.track
