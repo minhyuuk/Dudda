@@ -8,9 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.dudda.R
 import com.app.dudda.data.music.MusicDTO
+import com.app.dudda.data.music.MusicModel
 import com.app.dudda.data.music.MusicService
 import com.app.dudda.data.music.mapper
 import com.app.dudda.databinding.FragmentPlayerBinding
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import retrofit2.Call
@@ -76,7 +78,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                     if (isPlaying) {
                         binding.playControlImageView.setImageResource(R.drawable.ic_baseline_pause_48)
                     } else {
-                        binding.playControlImageView.setImageResource(R.drawable.ic_baseline_playlist_play_48)
+                        binding.playControlImageView.setImageResource(R.drawable.ic_baseline_play_arrow_48)
                     }
                 }
             })
@@ -118,6 +120,8 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                                     // 반환값은 MusicModel
                                     musicEntity.mapper(index.toLong())
                                 }
+
+                                setMusicList(modelList)
                                 playListAdapter.submitList(modelList)
                             }
                         }
@@ -128,6 +132,19 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
                     })
             }
+    }
+
+    private fun setMusicList(modelList: List<MusicModel>) {
+        context?.let {
+            player?.addMediaItems(modelList.map { musicModel ->
+                MediaItem.Builder()
+                    .setMediaId(musicModel.id.toString())
+                    .setUri(musicModel.streamUrl)
+                    .build()
+            })
+            player?.prepare()
+            player?.play()
+        }
     }
 
 
