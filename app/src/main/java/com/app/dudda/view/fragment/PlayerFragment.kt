@@ -53,10 +53,12 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             }
         }
         fragmentPlayerBinding.skipNextImageView.setOnClickListener {
-
+            val nextMusic = model.nextMusic() ?: return@setOnClickListener
+            playMusic(nextMusic)
         }
         fragmentPlayerBinding.skipPreviousImageView.setOnClickListener {
-
+            val previousMusic = model.previousMusic() ?: return@setOnClickListener
+            playMusic(previousMusic)
         }
     }
 
@@ -86,6 +88,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
     private fun initRecyclerView(fragmentPlayerBinding: FragmentPlayerBinding) {
         playListAdapter = PlayListAdapter {
             // 음악 재생하는 함수
+            playMusic(it)
         }
         fragmentPlayerBinding.playListRecyclerView.apply {
             adapter = playListAdapter
@@ -138,8 +141,13 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                     .build()
             })
             player?.prepare()
-            player?.play()
         }
+    }
+
+    private fun playMusic(musicModel: MusicModel){
+        model.updateCurrentPosition(musicModel)
+        player?.seekTo(model.currentPosition, 0)
+        player?.play()
     }
 
 
@@ -147,6 +155,8 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         fragmentPlayerBinding.playlistImageView.setOnClickListener {
             // server에서 data가 불러와지지 않았을 경우
             // playlist click 시 예외처리.
+            if(model.currentPosition == -1) return@setOnClickListener
+
             fragmentPlayerBinding.playListViewGroup.isVisible = model.isWatchingPlayListView
             fragmentPlayerBinding.playerViewGroup.isVisible = model.isWatchingPlayListView.not()
 
