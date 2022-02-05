@@ -7,10 +7,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.dudda.R
-import com.app.dudda.data.music.MusicDTO
-import com.app.dudda.data.music.MusicModel
-import com.app.dudda.data.music.MusicService
-import com.app.dudda.data.music.mapper
+import com.app.dudda.data.music.*
 import com.app.dudda.databinding.FragmentPlayerBinding
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
@@ -23,6 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class PlayerFragment : Fragment(R.layout.fragment_player) {
 
+    private var model: PlayerModel = PlayerModel()
     private var binding: FragmentPlayerBinding? = null
     private var boolOfWatchPlayerListView = true
     private var player: SimpleExoPlayer? = null
@@ -115,14 +113,11 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
                             // MusicDTO Nullable
                             response.body()?.let {
-                                val modelList = it.musics.mapIndexed { index, musicEntity ->
-                                    // mapper를 가지고 있음. MusicModelMapping 참고
-                                    // 반환값은 MusicModel
-                                    musicEntity.mapper(index.toLong())
-                                }
 
-                                setMusicList(modelList)
-                                playListAdapter.submitList(modelList)
+                                model = it.mapper()
+
+                                setMusicList(model.getAdapterModels())
+                                playListAdapter.submitList(model.getAdapterModels())
                             }
                         }
 
@@ -152,10 +147,10 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
         fragmentPlayerBinding.playlistImageView.setOnClickListener {
             // server에서 data가 불러와지지 않았을 경우
             // playlist click 시 예외처리.
-            fragmentPlayerBinding.playListViewGroup.isVisible = boolOfWatchPlayerListView
-            fragmentPlayerBinding.playerViewGroup.isVisible = boolOfWatchPlayerListView.not()
+            fragmentPlayerBinding.playListViewGroup.isVisible = model.isWatchingPlayListView
+            fragmentPlayerBinding.playerViewGroup.isVisible = model.isWatchingPlayListView.not()
 
-            boolOfWatchPlayerListView = !boolOfWatchPlayerListView
+            model.isWatchingPlayListView = !model.isWatchingPlayListView
         }
     }
 
