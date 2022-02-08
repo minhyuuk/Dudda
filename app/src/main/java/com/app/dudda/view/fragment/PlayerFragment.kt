@@ -22,7 +22,6 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
 
     private var model: PlayerModel = PlayerModel()
     private var binding: FragmentPlayerBinding? = null
-    private var boolOfWatchPlayerListView = true
     private var player: SimpleExoPlayer? = null
     private lateinit var playListAdapter: PlayListAdapter
 
@@ -80,6 +79,15 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                     } else {
                         binding.playControlImageView.setImageResource(R.drawable.ic_baseline_play_arrow_48)
                     }
+                }
+
+                override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
+                    super.onMediaItemTransition(mediaItem, reason)
+                    // recyclerview adapter 갱신
+                    // currentposition 초기화
+                    val newIndex = mediaItem?.mediaId ?: return
+                    model.currentPosition = newIndex.toInt()
+                    playListAdapter.submitList(model.getAdapterModels())
                 }
             })
         }
