@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.dudda.R
 import com.app.dudda.data.music.*
 import com.app.dudda.databinding.FragmentPlayerBinding
+import com.bumptech.glide.Glide
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -81,15 +82,34 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
                     }
                 }
 
+                override fun onPlaybackStateChanged(state: Int) {
+                    super.onPlaybackStateChanged(state)
+                    // getPlaybackState를 이용해 state 값 리턴
+                }
+
                 override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
                     super.onMediaItemTransition(mediaItem, reason)
                     // recyclerview adapter 갱신
                     // currentposition 초기화
                     val newIndex = mediaItem?.mediaId ?: return
                     model.currentPosition = newIndex.toInt()
+                    updatePlayerView(model.currentMusicModel())
+
                     playListAdapter.submitList(model.getAdapterModels())
                 }
             })
+        }
+    }
+
+    private fun updatePlayerView(currentMusicModel: MusicModel?) {
+        currentMusicModel ?: return
+
+        binding?.let { binding ->
+            binding.trackTextView.text = currentMusicModel.track
+            binding.artistTextView.text = currentMusicModel.artistName
+            Glide.with(binding.coverImageView.context)
+                .load(currentMusicModel.coverImageUrl)
+                .into(binding.coverImageView)
         }
     }
 
